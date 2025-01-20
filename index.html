@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CubeVM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CubeVM, high end on low end</h1>
+
+<button onclick="manageWorkspace('start')">Start WorkSpace</button>
+<button onclick="manageWorkspace('stop')">Stop WorkSpace</button>
+<button onclick="manageWorkspace('reboot')">Reboot WorkSpace</button>
+
+<script>
+    const apiUrl = 'https://0e607251b179ae899.execute-api.us-west-2.amazonaws.com/prod/manage-workspace'; // Replace with your API endpoint
+
+    // Function to handle workspace management
+    function manageWorkspace(action) {
+        const workspaceId = 'ws-12345678';  // Replace with your actual WorkSpace ID
+        
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                workspaceId: workspaceId,
+                action: action
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.statusCode === 200) {
+                alert(`${action.charAt(0).toUpperCase() + action.slice(1)} action completed successfully!`);
+            } else {
+                alert('Failed to perform action. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error with the action.');
+        });
+    }
+</script>
+
+</body>
+</html>
